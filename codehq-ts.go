@@ -1,9 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"github.com/hxhieu/codehq-ts/services"
 )
 
 func main() {
-	fmt.Println("Hello world!")
+	test, err := services.Timesheet().GetWeeklyTimesheet("aaa", nil, nil)
+	if err != nil {
+		OutputError(&err)
+	} else {
+		OutputResult(test)
+	}
 }
