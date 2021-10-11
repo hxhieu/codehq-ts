@@ -1,2 +1,3 @@
 codehq-ts.*
 !codehq-ts.go
+connstr
