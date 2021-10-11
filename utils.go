@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/hxhieu/codehq-ts/models"
 )
@@ -11,7 +12,7 @@ import (
 func OutputError(err *error) {
 	bytes, jsonErr := json.Marshal(models.Response{Error: (*err).Error()})
 	if jsonErr != nil {
-		panic(jsonErr)
+		log.Fatal(jsonErr)
 	}
 	fmt.Println(string(bytes))
 }
@@ -20,7 +21,7 @@ func OutputError(err *error) {
 func OutputResult(any interface{}) {
 	bytes, jsonErr := json.Marshal(models.Response{Data: any})
 	if jsonErr != nil {
-		panic(jsonErr)
+		log.Fatal(jsonErr)
 	}
 	fmt.Println(string(bytes))
 }

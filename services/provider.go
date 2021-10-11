@@ -7,6 +7,7 @@ import (
 
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type provider struct {
@@ -34,7 +35,15 @@ func init() {
 		dsn = os.Getenv("CODEHQ_TS_CONNECTION_STRING")
 	}
 
-	db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
+	// Default no logging as it would interfere with result parsing
+	runLogger := logger.Default.LogMode(logger.Silent)
+	// OR debug mode
+	if os.Getenv("CODEHQ_TS_RUN_MODE") == "debug" {
+		runLogger = logger.Default.LogMode(logger.Info)
+	}
+	db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{
+		Logger: runLogger,
+	})
 	if err != nil {
 		log.Fatal("Fail to init db: ", err)
 	}
