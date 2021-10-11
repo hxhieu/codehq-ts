@@ -9,7 +9,7 @@ import (
 
 // OutputError serialises Go error to a predictable JSON string
 func OutputError(err *error) {
-	bytes, jsonErr := json.Marshal(models.FormattedError{Error: (*err).Error()})
+	bytes, jsonErr := json.Marshal(models.Response{Error: (*err).Error()})
 	if jsonErr != nil {
 		panic(jsonErr)
 	}
@@ -18,7 +18,7 @@ func OutputError(err *error) {
 
 // OutputResult serialises any object to JSON string
 func OutputResult(any interface{}) {
-	bytes, jsonErr := json.Marshal(any)
+	bytes, jsonErr := json.Marshal(models.Response{Data: any})
 	if jsonErr != nil {
 		panic(jsonErr)
 	}
