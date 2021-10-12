@@ -21,7 +21,7 @@ func main() {
 		End:         time.Now().Add(15 * time.Minute),
 	}
 	newId, err1 := services.Timesheet().AddTimesheet(&entry)
-	services.Close()
+	services.Timesheet().Dispose()
 	if err1 != nil {
 		OutputError(&err1)
 	} else {

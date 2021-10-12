@@ -1,66 +1,40 @@
 package services
 
 import (
-	"io"
 	"log"
-	"os"
 
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+
+	"github.com/hxhieu/codehq-ts/configuration"
 )
 
 type provider struct {
 	db *gorm.DB
 }
 
-// Instance of the DB
-var db *gorm.DB
-
 // Services
 var timesheetService TimesheetService
 
 func init() {
-	dsn := ""
-
-	file, err := os.Open("connstr")
-	// Can open the connstr file
-	if err == nil {
-		b, err := io.ReadAll(file)
-		// Can read the connstr file
-		if err == nil {
-			dsn = string(b)
-		}
-		file.Close()
-	}
-
-	// Fallback to env var
-	if len(dsn) == 0 {
-		dsn = os.Getenv("CODEHQ_TS_CONNECTION_STRING")
-	}
+	config := configuration.Get()
 
 	// Default no logging as it would interfere with result parsing
 	runLogger := logger.Default.LogMode(logger.Silent)
 	// OR debug mode
-	if os.Getenv("CODEHQ_TS_RUN_MODE") == "debug" {
+	if config.Debug {
 		runLogger = logger.Default.LogMode(logger.Info)
 	}
-	db, err = gorm.Open(sqlserver.Open(dsn), &gorm.Config{
+
+	// Timesheet DB
+	db, err := gorm.Open(sqlserver.Open(config.TimesheetDsn), &gorm.Config{
 		Logger: runLogger,
 	})
 	if err != nil {
-		log.Fatal("Fail to init db: ", err)
+		log.Fatal("Fail to init Timesheet db: ", err)
 	}
 	timesheetService = &provider{db}
 }
 
 func Timesheet() TimesheetService { return timesheetService }
-
-func Close() {
-	d, err := db.DB()
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		d.Close()
-	}
-}

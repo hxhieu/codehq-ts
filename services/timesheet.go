@@ -1,6 +1,7 @@
 package services
 
 import (
+	"log"
 	"time"
 
 	"github.com/hxhieu/codehq-ts/models"
@@ -9,6 +10,7 @@ import (
 type TimesheetService interface {
 	AddTimesheet(entry *models.Timesheet) (int64, error)
 	GetWeeklyTimesheet(employeeId string, start *time.Time) (*[]models.Timesheet, error)
+	Dispose()
 }
 
 func getWeekRange(start *time.Time) (*time.Time, *time.Time) {
@@ -67,4 +69,13 @@ func (orm *provider) GetWeeklyTimesheet(employeeId string, start *time.Time) (en
 		return nil, result.Error
 	}
 	return &records, nil
+}
+
+func (orm *provider) Dispose() {
+	db, err := orm.db.DB()
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		db.Close()
+	}
 }
