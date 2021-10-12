@@ -1,0 +1,8 @@
+author: Hugh Hoang <hugh.hoang@codehq.nz>
+year: 2021
+license:
+  header: For internal use only
+  text: |
+    {{ .copyright }}
+
+    For internal use only
