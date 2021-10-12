@@ -15,6 +15,7 @@ type Timesheet struct {
 	Description string    `gorm:"column:Description"`
 	Start       time.Time `gorm:"column:Start"`
 	End         time.Time `gorm:"column:End"`
+	Duration    float32   `gorm:"column:Duration"`
 }
 
 func (Timesheet) TableName() string {

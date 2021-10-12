@@ -14,6 +14,10 @@ type provider struct {
 	db *gorm.DB
 }
 
+// Instance of the DB
+var db *gorm.DB
+
+// Services
 var timesheetService TimesheetService
 
 func init() {
@@ -41,7 +45,7 @@ func init() {
 	if os.Getenv("CODEHQ_TS_RUN_MODE") == "debug" {
 		runLogger = logger.Default.LogMode(logger.Info)
 	}
-	db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{
+	db, err = gorm.Open(sqlserver.Open(dsn), &gorm.Config{
 		Logger: runLogger,
 	})
 	if err != nil {
@@ -51,3 +55,12 @@ func init() {
 }
 
 func Timesheet() TimesheetService { return timesheetService }
+
+func Close() {
+	d, err := db.DB()
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		d.Close()
+	}
+}

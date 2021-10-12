@@ -7,7 +7,7 @@ import (
 )
 
 type TimesheetService interface {
-	AddTimesheet(entry *models.Timesheet) error
+	AddTimesheet(entry *models.Timesheet) (int64, error)
 	GetWeeklyTimesheet(employeeId string, start *time.Time) (*[]models.Timesheet, error)
 }
 
@@ -24,8 +24,39 @@ func getWeekRange(start *time.Time) (*time.Time, *time.Time) {
 	return &weekStart, &weekEnd
 }
 
-func (orm *provider) AddTimesheet(entry *models.Timesheet) (err error) {
-	return
+func (orm *provider) AddTimesheet(entry *models.Timesheet) (int64, error) {
+	// HACK: Pretty bad one, just for the sake of Timesheet2's legacy...
+	// Cannot use the Create method because the table triggers prevent returning of the new record ID
+	// which is the default behaviour of GORM Create method
+
+	// TODO: Must validate the input against the employee project etc
+
+	var newId int64
+	result := orm.db.Raw(`
+		INSERT INTO Timesheet2 (
+			[EmployeeId],
+			[ProjectId],
+			[Phase],
+			[Code],
+			[Charge],
+			[Description],
+			[Start],
+			[End]
+		) VALUES (
+			@EmployeeId,
+			@ProjectId,
+			@Phase,
+			@Code,
+			@Charge,
+			@Description,
+			@Start,
+			@End
+		);
+		SELECT SCOPE_IDENTITY()`, entry).Scan(&newId)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return newId, nil
 }
 
 func (orm *provider) GetWeeklyTimesheet(employeeId string, start *time.Time) (entries *[]models.Timesheet, err error) {
