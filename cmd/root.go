@@ -5,12 +5,7 @@ For internal use only
 package cmd
 
 import (
-	"encoding/json"
-	"fmt"
-	"log"
-
 	"github.com/hxhieu/codehq-ts/configuration"
-	"github.com/hxhieu/codehq-ts/models"
 	"github.com/spf13/cobra"
 )
 
@@ -42,22 +37,4 @@ func init() {
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	cobra.CheckErr(rootCmd.Execute())
-}
-
-// OutputError serialises Go error to a predictable JSON string
-func OutputError(err *error) {
-	bytes, jsonErr := json.Marshal(models.Response{Error: (*err).Error()})
-	if jsonErr != nil {
-		log.Fatal(jsonErr)
-	}
-	fmt.Println(string(bytes))
-}
-
-// OutputResult serialises any object to JSON string
-func OutputResult(any interface{}) {
-	bytes, jsonErr := json.Marshal(models.Response{Data: any})
-	if jsonErr != nil {
-		log.Fatal(jsonErr)
-	}
-	fmt.Println(string(bytes))
 }

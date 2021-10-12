@@ -26,9 +26,9 @@ var timesheetGetWeeklyCmd = &cobra.Command{
 				log.Fatal(fmt.Sprintf("Failed to parse date. '%s' is not a valid 'DD/MM/YYYY'", GetTimesheetDate))
 			} else {
 				if result, err := services.Timesheet().GetWeeklyTimesheet("hugh.hoang", &date); err != nil {
-					OutputError(&err)
+					OutputErrorJson(&err)
 				} else {
-					OutputResult(result)
+					OutputResultJson(result)
 				}
 			}
 		}
