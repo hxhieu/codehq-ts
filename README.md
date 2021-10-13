@@ -1,3 +1,14 @@
+# `.env` file
+
+```
+CODEHQ_TS_TIMESHEET_DSN='sqlserver://USER:PASS@HOST?database=DB&parseTime=true'
+CODEHQ_TS_PIMP_DSN='sqlserver://USER:PASS@HOST?database=DB&parseTime=true'
+```
+
+Or it will fallback to the machine env vars if no `.env` file found.
+
+Ultimately it will crash if nothing found :)
+
 # To scaffold new command
 
 `cobra add COMMAND --config ./cobra.yaml`
