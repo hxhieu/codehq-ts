@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/hxhieu/codehq-ts/models"
@@ -74,6 +75,7 @@ func (orm *provider) GetWeeklyTimesheet(employeeId string, start *time.Time) (en
 func (orm *provider) Dispose() {
 	db, err := orm.db.DB()
 	if err != nil {
+		err := fmt.Errorf("failed to close the db connection: %s", err)
 		output.ConsoleErrorJson(&err)
 	} else {
 		db.Close()

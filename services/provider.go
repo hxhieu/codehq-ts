@@ -1,6 +1,8 @@
 package services
 
 import (
+	"fmt"
+
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -31,6 +33,7 @@ func init() {
 		Logger: runLogger,
 	})
 	if err != nil {
+		err := fmt.Errorf("failed to connect to the db: %s", err)
 		output.ConsoleErrorJson(&err)
 	}
 	timesheetService = &provider{db}

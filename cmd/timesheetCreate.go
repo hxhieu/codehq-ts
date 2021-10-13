@@ -68,21 +68,23 @@ var timesheetCreateCmd = &cobra.Command{
 		}
 
 		// Insert
-		if newId, err := services.Timesheet().AddTimesheet(&record); err != nil {
+		newId, err := services.Timesheet().AddTimesheet(&record)
+		if err != nil {
 			output.ConsoleErrorJson(&err)
-		} else {
-			switch OutputFormat {
+		}
 
-			case "table":
-				output.ConsoleResultTable([][]string{
-					{fmt.Sprintf("%d", newId)},
-				}, []string{
-					"NewId",
-				})
+		// Result
+		switch OutputFormat {
 
-			default:
-				output.ConsoleResultJson(newId)
-			}
+		case "table":
+			output.ConsoleResultTable([][]string{
+				{fmt.Sprintf("%d", newId)},
+			}, []string{
+				"NewId",
+			})
+
+		default:
+			output.ConsoleResultJson(newId)
 		}
 	},
 }

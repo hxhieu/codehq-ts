@@ -26,11 +26,13 @@ var timesheetGetWeeklyCmd = &cobra.Command{
 			output.ConsoleErrorJson(&err)
 		}
 
+		// Service call
 		result, err := services.Timesheet().GetWeeklyTimesheet(EmployeeId, date)
 		if err != nil {
 			output.ConsoleErrorJson(&err)
 		}
 
+		// Output
 		switch OutputFormat {
 		case "table":
 			tableData := [][]string{}
