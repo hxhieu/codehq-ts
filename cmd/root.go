@@ -12,6 +12,7 @@ import (
 )
 
 var DateLayout string
+var TimeLayout string
 
 // Global flags
 
@@ -27,7 +28,10 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	DateLayout = configuration.Get().DateFormat
+	// Cache the configuration
+	config := configuration.Get()
+	DateLayout = config.DateFormat
+	TimeLayout = config.TimeFormat
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:

@@ -5,11 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug",
+      "name": "create timesheet",
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}"
+      "program": "${workspaceFolder}",
+      "args": ["create", "timesheet", "-e", "hugh.hoang"]
     }
   ]
 }

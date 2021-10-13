@@ -1,13 +1,12 @@
 package services
 
 import (
-	"log"
-
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
 	"github.com/hxhieu/codehq-ts/configuration"
+	"github.com/hxhieu/codehq-ts/output"
 )
 
 type provider struct {
@@ -32,7 +31,7 @@ func init() {
 		Logger: runLogger,
 	})
 	if err != nil {
-		log.Fatal("Fail to init Timesheet db: ", err)
+		output.ConsoleErrorJson(&err)
 	}
 	timesheetService = &provider{db}
 }

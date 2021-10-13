@@ -5,6 +5,7 @@ For internal use only
 package cmd
 
 import (
+	"github.com/hxhieu/codehq-ts/output"
 	"github.com/hxhieu/codehq-ts/services"
 	"github.com/spf13/cobra"
 )
@@ -15,34 +16,41 @@ var timesheetGetWeeklyCmd = &cobra.Command{
 	Short: "Get the employee weekly record(s)",
 	Long:  `Get the employee weekly record(s)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		EnsureEmployeeId()
-		date := ParseDate()
-		if result, err := services.Timesheet().GetWeeklyTimesheet(EmployeeId, date); err != nil {
-			OutputErrorJson(&err)
-		} else {
-			switch OutputFormat {
+		err := ParseEmployeeId()
+		if err != nil {
+			output.ConsoleErrorJson(&err)
+		}
 
-			case "table":
-				tableData := [][]string{}
-				for _, record := range *result {
-					tableData = append(tableData, record.ToStringArray())
-				}
-				OutputResultTable(tableData, []string{
-					"Id",
-					"EmployeeId",
-					"ProjectId",
-					"Phase",
-					"Code",
-					"Charge",
-					"Description",
-					"Start",
-					"End",
-					"Duration",
-				})
+		date, err := ParseInputDate()
+		if err != nil {
+			output.ConsoleErrorJson(&err)
+		}
 
-			default:
-				OutputResultJson(result)
+		result, err := services.Timesheet().GetWeeklyTimesheet(EmployeeId, date)
+		if err != nil {
+			output.ConsoleErrorJson(&err)
+		}
+
+		switch OutputFormat {
+		case "table":
+			tableData := [][]string{}
+			for _, record := range *result {
+				tableData = append(tableData, record.ToStringArray())
 			}
+			output.ConsoleResultTable(tableData, []string{
+				"Id",
+				"EmployeeId",
+				"ProjectId",
+				"Phase",
+				"Code",
+				"Charge",
+				"Description",
+				"Start",
+				"End",
+				"Duration",
+			})
+		default:
+			output.ConsoleResultJson(result)
 		}
 	},
 }

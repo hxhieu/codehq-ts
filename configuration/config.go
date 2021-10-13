@@ -12,6 +12,7 @@ type Config struct {
 	PimpDsn      string `mapstructure:"CODEHQ_TS_PIMP_DSN"`
 	Debug        bool   `mapstructure:"CODEHQ_TS_DEBUG"`
 	DateFormat   string
+	TimeFormat   string
 }
 
 var config *Config
@@ -39,8 +40,9 @@ func init() {
 	if err != nil {
 		panic(fmt.Sprintf("Failed to parse the configuration: %s", err))
 	}
-	// Go date layout
-	config.DateFormat = "02/01/2006"
+	// Go specific date time layout
+	config.DateFormat = "02/01/2006" // dd/MM/yyyy
+	config.TimeFormat = "1504"       // HHmm
 }
 
 func Get() *Config {
