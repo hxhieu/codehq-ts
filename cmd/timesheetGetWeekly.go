@@ -32,6 +32,8 @@ var timesheetGetWeeklyCmd = &cobra.Command{
 			output.ConsoleErrorJson(&err)
 		}
 
+		services.Timesheet().Dispose()
+
 		// Output
 		switch OutputFormat {
 		case "table":

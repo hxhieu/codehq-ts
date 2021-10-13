@@ -91,6 +91,8 @@ var timesheetCreateCmd = &cobra.Command{
 			output.ConsoleErrorJson(&err)
 		}
 
+		services.Timesheet().Dispose()
+
 		// Result
 		switch OutputFormat {
 
