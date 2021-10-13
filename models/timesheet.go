@@ -32,8 +32,8 @@ func (record *Timesheet) ToStringArray() []string {
 		record.Code,
 		record.Charge,
 		record.Description,
-		record.Start.Format(time.Layout),
-		record.End.Format(time.Layout),
+		record.Start.Format(time.RFC822Z),
+		record.End.Format(time.RFC822Z),
 		fmt.Sprintf("%.2f", record.Duration),
 	}
 }
