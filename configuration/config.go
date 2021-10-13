@@ -2,7 +2,6 @@ package configuration
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/hxhieu/codehq-ts/output"
 	"github.com/spf13/viper"
@@ -53,9 +52,10 @@ func init() {
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
 	err := viper.ReadInConfig()
+
+	// Cannot parse config file
+	// then parse env as the fallback
 	if err != nil {
-		// Parse env as the fallback
-		log.Println("No .env file found, using environment variables.")
 		viper.AutomaticEnv()
 	}
 
