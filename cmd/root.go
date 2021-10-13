@@ -5,13 +5,19 @@ For internal use only
 package cmd
 
 import (
+	"time"
+
 	"github.com/hxhieu/codehq-ts/configuration"
 	"github.com/spf13/cobra"
 )
 
-var EmployeeId string
-var OutputFormat string
 var DateLayout string
+
+// Global flags
+
+var EmployeeId string
+var InputDate string
+var OutputFormat string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -30,7 +36,7 @@ func init() {
 		"output",
 		"o",
 		"json",
-		"The output format. Can be either 'json', or 'table'",
+		"The output format 'json'|'table'",
 	)
 
 	rootCmd.PersistentFlags().StringVarP(
@@ -39,6 +45,14 @@ func init() {
 		"e",
 		"",
 		"The employee ID, should be firstname.lastname",
+	)
+
+	rootCmd.PersistentFlags().StringVarP(
+		&InputDate,
+		"date",
+		"d",
+		time.Now().Format(configuration.Get().DateFormat),
+		"Records start date (DD/MM/YYYY)",
 	)
 }
 

@@ -5,10 +5,6 @@ For internal use only
 package cmd
 
 import (
-	"fmt"
-	"log"
-	"time"
-
 	"github.com/hxhieu/codehq-ts/services"
 	"github.com/spf13/cobra"
 )
@@ -19,39 +15,33 @@ var timesheetGetWeeklyCmd = &cobra.Command{
 	Short: "Get the employee weekly record(s)",
 	Long:  `Get the employee weekly record(s)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(EmployeeId) == 0 {
-			log.Fatal("Employee ID is required.")
+		EnsureEmployeeId()
+		date := ParseDate()
+		if result, err := services.Timesheet().GetWeeklyTimesheet(EmployeeId, date); err != nil {
+			OutputErrorJson(&err)
 		} else {
-			if date, err := time.ParseInLocation(DateLayout, GetTimesheetDate, time.Local); err != nil {
-				log.Fatal(fmt.Sprintf("Failed to parse date. '%s' is not a valid 'DD/MM/YYYY'", GetTimesheetDate))
-			} else {
-				if result, err := services.Timesheet().GetWeeklyTimesheet(EmployeeId, &date); err != nil {
-					OutputErrorJson(&err)
-				} else {
-					switch OutputFormat {
+			switch OutputFormat {
 
-					case "table":
-						tableData := [][]string{}
-						for _, record := range *result {
-							tableData = append(tableData, record.ToStringArray())
-						}
-						OutputResultTable(tableData, []string{
-							"Id",
-							"EmployeeId",
-							"ProjectId",
-							"Phase",
-							"Code",
-							"Charge",
-							"Description",
-							"Start",
-							"End",
-							"Duration",
-						})
-
-					default:
-						OutputResultJson(result)
-					}
+			case "table":
+				tableData := [][]string{}
+				for _, record := range *result {
+					tableData = append(tableData, record.ToStringArray())
 				}
+				OutputResultTable(tableData, []string{
+					"Id",
+					"EmployeeId",
+					"ProjectId",
+					"Phase",
+					"Code",
+					"Charge",
+					"Description",
+					"Start",
+					"End",
+					"Duration",
+				})
+
+			default:
+				OutputResultJson(result)
 			}
 		}
 	},
