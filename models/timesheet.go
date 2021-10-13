@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -20,4 +21,19 @@ type Timesheet struct {
 
 func (Timesheet) TableName() string {
 	return "Timesheet2"
+}
+
+func (record *Timesheet) ToStringArray() []string {
+	return []string{
+		fmt.Sprintf("%d", record.Id),
+		record.EmployeeId,
+		fmt.Sprintf("%d", record.ProjectId),
+		record.Phase,
+		record.Code,
+		record.Charge,
+		record.Description,
+		record.Start.Format(time.Layout),
+		record.End.Format(time.Layout),
+		fmt.Sprintf("%.2f", record.Duration),
+	}
 }
