@@ -10,6 +10,7 @@ import (
 )
 
 var EmployeeId string
+var OutputFormat string
 var DateLayout string
 
 // rootCmd represents the base command when called without any subcommands
@@ -24,6 +25,14 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
+	rootCmd.PersistentFlags().StringVarP(
+		&OutputFormat,
+		"output",
+		"o",
+		"json",
+		"The output format. Can be either 'json', or 'table'",
+	)
+
 	rootCmd.PersistentFlags().StringVarP(
 		&EmployeeId,
 		"employee",
