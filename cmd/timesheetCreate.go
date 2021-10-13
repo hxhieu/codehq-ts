@@ -7,7 +7,9 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"strings"
 
+	"github.com/hxhieu/codehq-ts/configuration"
 	"github.com/hxhieu/codehq-ts/models"
 	"github.com/hxhieu/codehq-ts/output"
 	"github.com/hxhieu/codehq-ts/services"
@@ -21,6 +23,15 @@ var nonCharge bool
 var desc string
 var startString string
 var endString string
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
 
 // timesheetCreateCmd represents the timesheetCreate command
 var timesheetCreateCmd = &cobra.Command{
@@ -40,6 +51,13 @@ var timesheetCreateCmd = &cobra.Command{
 
 		if len(phase) == 0 {
 			err = errors.New("project phase is required")
+			output.ConsoleErrorJson(&err)
+		}
+
+		allowedCodes := configuration.Get().AllowedCodes
+		code = strings.ToUpper(code)
+		if !contains(allowedCodes, code) {
+			err = fmt.Errorf("invalid timesheet code, must be one of these %v", allowedCodes)
 			output.ConsoleErrorJson(&err)
 		}
 

@@ -26,6 +26,27 @@ func init() {
 	viper.SetDefault("CODEHQ_TS_PIMP_DSN", "")
 	viper.SetDefault("CODEHQ_TS_DATE_FORMAT", "02/01/2006") // dd/MM/yyyy
 	viper.SetDefault("CODEHQ_TS_TIME_FORMAT", "1504")       // HHmm
+	viper.SetDefault("CODEHQ_TS_ALLOWED_CODES", []string{
+		"PLAN",
+		"ANLYS",
+		"CODIG",
+		"TESTG",
+		"REVEW",
+		"RETRO",
+		"GROOM",
+		"ADMIN",
+		"AFTER",
+		"CONSY",
+		"DOCUM",
+		"EDUCN",
+		"INSTL",
+		"MEETG",
+		"NETWK",
+		"SALES",
+		"STAFF",
+		"TRAIN",
+		"TTIME",
+	})
 
 	// The read the config file, if any
 	viper.AddConfigPath(".")
@@ -42,7 +63,7 @@ func init() {
 	config = &Config{}
 	err = viper.Unmarshal(config)
 	if err != nil {
-		err := fmt.Errorf("failed to parse the configuration: %s", err)
+		err := fmt.Errorf("failed to deserialise the configuration: %s", err)
 		output.ConsoleErrorJson(&err)
 	}
 }
