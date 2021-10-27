@@ -15,7 +15,7 @@ func ParseEmployeeId() error {
 
 func ParseInputDate() (*time.Time, error) {
 	if date, err := time.ParseInLocation(DateLayout, InputDate, time.Local); err != nil {
-		return nil, fmt.Errorf("failed to parse date. '%s' is not a valid 'DD/MM/YYYY'", InputDate)
+		return nil, fmt.Errorf("failed to parse date. '%s' is not a valid 'DDMMYYYY'", InputDate)
 	} else {
 		return &date, nil
 	}

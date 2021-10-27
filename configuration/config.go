@@ -21,10 +21,10 @@ var config *Config
 func init() {
 	// Default keys
 	viper.SetDefault("CODEHQ_TS_DEBUG", false)
-	viper.SetDefault("CODEHQ_TS_TIMESHEET_DSN", "") // dd/MM/yyyy
+	viper.SetDefault("CODEHQ_TS_TIMESHEET_DSN", "")
 	viper.SetDefault("CODEHQ_TS_PIMP_DSN", "")
-	viper.SetDefault("CODEHQ_TS_DATE_FORMAT", "02/01/2006") // dd/MM/yyyy
-	viper.SetDefault("CODEHQ_TS_TIME_FORMAT", "1504")       // HHmm
+	viper.SetDefault("CODEHQ_TS_DATE_FORMAT", "02012006") // ddMMyyyy
+	viper.SetDefault("CODEHQ_TS_TIME_FORMAT", "1504")     // HHmm
 	viper.SetDefault("CODEHQ_TS_ALLOWED_CODES", []string{
 		"PLAN",
 		"ANLYS",

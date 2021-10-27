@@ -56,7 +56,7 @@ func init() {
 		"date",
 		"d",
 		time.Now().Format(configuration.Get().DateFormat),
-		"Records start date (DD/MM/YYYY)",
+		"Records start date (DDMMYYYY)",
 	)
 }
 
